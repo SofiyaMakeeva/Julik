@@ -4,7 +4,7 @@ using UnityEngine;
 public class Signaling : MonoBehaviour
 {
     private Volume _volume;
-    public bool IsThiefInTheHouse { get; private set; }
+    private bool _isThiefInTheHouse;
 
     private void Start()
     {
@@ -15,9 +15,9 @@ public class Signaling : MonoBehaviour
     {
         if (other.TryGetComponent<Thief>(out Thief thief))
         {
-            IsThiefInTheHouse = true;
+            _isThiefInTheHouse = true;
             
-            StartCoroutine(_volume.ChangeVolume(IsThiefInTheHouse));
+            StartCoroutine(_volume.ChangeVolume(_isThiefInTheHouse));
         }
     }
 
@@ -25,9 +25,9 @@ public class Signaling : MonoBehaviour
     {
         if (other.TryGetComponent<Thief>(out Thief thief))
         {
-            IsThiefInTheHouse = false;
+            _isThiefInTheHouse = false;
 
-            StartCoroutine(_volume.ChangeVolume(IsThiefInTheHouse));
+            StartCoroutine(_volume.ChangeVolume(_isThiefInTheHouse));
         }
     }
 }
