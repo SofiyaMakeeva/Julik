@@ -4,12 +4,12 @@ using UnityEngine;
 [RequireComponent(typeof(Signaling))]
 public class Detector : MonoBehaviour
 {
-    private Signaling _volume;
+    private Signaling _signaling;
     private bool _isThiefInTheHouse;
 
     private void Start()
     {
-        _volume = GetComponent<Signaling>();
+        _signaling = GetComponent<Signaling>();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -17,8 +17,8 @@ public class Detector : MonoBehaviour
         if (other.TryGetComponent<Thief>(out Thief thief))
         {
             _isThiefInTheHouse = true;
-            
-            StartCoroutine(_volume.PlayTheAlarm(_isThiefInTheHouse));
+
+            _signaling.GiveSignal(_isThiefInTheHouse);
         }
     }
 
@@ -28,7 +28,7 @@ public class Detector : MonoBehaviour
         {
             _isThiefInTheHouse = false;
 
-            StartCoroutine(_volume.PlayTheAlarm(_isThiefInTheHouse));
+            _signaling.GiveSignal(_isThiefInTheHouse);
         }
     }
 }

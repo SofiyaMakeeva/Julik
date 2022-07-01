@@ -6,38 +6,55 @@ public class Signaling : MonoBehaviour
 {
     [SerializeField] private float _duration;
 
+    private float _minVolume = 0;
+    private float _maxVolume = 1;
+    private Coroutine _alarm;
+    //private Coroutine _declineAlarm;
     private AudioSource _audioSource;
 
     private void Start()
     {
         _audioSource = GetComponent<AudioSource>();
-        _audioSource.volume = 0;
+        _audioSource.volume = _minVolume;
     }
 
-    public IEnumerator PlayTheAlarm(bool isReached)
+    public void GiveSignal(bool isReached)
     {
         if (isReached)
         {
-            _audioSource.Play();
+            StartCorroutine(_maxVolume);
+
+            _audioSource.Play();   
         }
-
-        float endVolume = System.Convert.ToSingle(isReached);
-
-        while (_audioSource.volume != endVolume)
+        else
         {
-            ChangeVolume(endVolume);
+            StartCorroutine(_minVolume);
+
+            if (_audioSource.volume == 0)
+            {
+                _audioSource.Stop();
+            }
+        }
+    }
+
+    private void StartCorroutine(float volume)
+    {
+        if (_alarm != null)
+        {
+            StopCoroutine(_alarm);
+        }
+        _alarm = StartCoroutine(ChangeVolume(volume));
+
+        StartCoroutine(ChangeVolume(volume));
+    }
+
+    private IEnumerator ChangeVolume(float volume)
+    {
+        while (_audioSource.volume != volume)
+        {
+            _audioSource.volume = Mathf.MoveTowards(_audioSource.volume, volume, _duration * Time.deltaTime);
 
             yield return null;
         }  
-    }
-
-    private void ChangeVolume(float endVolume)
-    {
-        _audioSource.volume = Mathf.MoveTowards(_audioSource.volume, endVolume, _duration * Time.deltaTime);
-
-        if (_audioSource.volume == 0)
-        {
-            _audioSource.Stop();
-        }
     }
 }
