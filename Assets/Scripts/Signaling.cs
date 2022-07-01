@@ -1,33 +1,43 @@
 using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(AudioSource))]
 public class Signaling : MonoBehaviour
 {
-    private Volume _volume;
-    private bool _isThiefInTheHouse;
+    [SerializeField] private float _duration;
+
+    private AudioSource _audioSource;
 
     private void Start()
     {
-        _volume = GetComponent<Volume>();
+        _audioSource = GetComponent<AudioSource>();
+        _audioSource.volume = 0;
     }
 
-    private void OnTriggerEnter(Collider other)
+    public IEnumerator PlayTheAlarm(bool isReached)
     {
-        if (other.TryGetComponent<Thief>(out Thief thief))
+        if (isReached)
         {
-            _isThiefInTheHouse = true;
-            
-            StartCoroutine(_volume.ChangeVolume(_isThiefInTheHouse));
+            _audioSource.Play();
         }
+
+        float endVolume = System.Convert.ToSingle(isReached);
+
+        while (_audioSource.volume != endVolume)
+        {
+            ChangeVolume(endVolume);
+
+            yield return null;
+        }  
     }
 
-    private void OnTriggerExit(Collider other)
+    private void ChangeVolume(float endVolume)
     {
-        if (other.TryGetComponent<Thief>(out Thief thief))
-        {
-            _isThiefInTheHouse = false;
+        _audioSource.volume = Mathf.MoveTowards(_audioSource.volume, endVolume, _duration * Time.deltaTime);
 
-            StartCoroutine(_volume.ChangeVolume(_isThiefInTheHouse));
+        if (_audioSource.volume == 0)
+        {
+            _audioSource.Stop();
         }
     }
 }
