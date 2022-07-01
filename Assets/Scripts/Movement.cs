@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
-    void Update()
+    private void Update()
     {
         transform.Translate(Vector3.back * Time.deltaTime);
     }

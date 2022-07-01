@@ -18,7 +18,7 @@ public class Detector : MonoBehaviour
         {
             _isThiefInTheHouse = true;
 
-            _signaling.GiveSignal(_isThiefInTheHouse);
+            _signaling.Activate(_isThiefInTheHouse);
         }
     }
 
@@ -28,7 +28,7 @@ public class Detector : MonoBehaviour
         {
             _isThiefInTheHouse = false;
 
-            _signaling.GiveSignal(_isThiefInTheHouse);
+            _signaling.Activate(_isThiefInTheHouse);
         }
     }
 }

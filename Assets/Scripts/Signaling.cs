@@ -9,7 +9,6 @@ public class Signaling : MonoBehaviour
     private float _minVolume = 0;
     private float _maxVolume = 1;
     private Coroutine _alarm;
-    //private Coroutine _declineAlarm;
     private AudioSource _audioSource;
 
     private void Start()
@@ -18,17 +17,17 @@ public class Signaling : MonoBehaviour
         _audioSource.volume = _minVolume;
     }
 
-    public void GiveSignal(bool isReached)
+    public void Activate(bool isReached)
     {
         if (isReached)
         {
-            StartCorroutine(_maxVolume);
+            ActivateAlarm(_maxVolume);
 
             _audioSource.Play();   
         }
         else
         {
-            StartCorroutine(_minVolume);
+            ActivateAlarm(_minVolume);
 
             if (_audioSource.volume == 0)
             {
@@ -37,7 +36,7 @@ public class Signaling : MonoBehaviour
         }
     }
 
-    private void StartCorroutine(float volume)
+    private void ActivateAlarm(float volume)
     {
         if (_alarm != null)
         {
