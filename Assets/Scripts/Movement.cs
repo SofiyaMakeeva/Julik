@@ -4,14 +4,17 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
-    [SerializeField] private float _speed;
+    //[SerializeField] private float _speed;
 
-    private int _distance = 50;
+    //private int _distance = 50;
 
     void Update()
     {
-        Vector3 target = new Vector3(transform.position.x + _distance, transform.position.y, transform.position.z);
+        //Vector3 target = new Vector3(transform.position.x + _distance, transform.position.y, transform.position.z);
 
-        transform.position = Vector3.MoveTowards(transform.position, target, _speed * Time.deltaTime);
+        //transform.position = Vector3.MoveTowards(transform.position, target, _speed * Time.deltaTime);
+
+        //transform.Translate(_distance, 0, _speed * Time.deltaTime);
+        transform.Translate(Vector3.back * Time.deltaTime);
     }
 }
